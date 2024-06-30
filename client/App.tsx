@@ -33,6 +33,8 @@ function App() {
 
   const { run: runTest } = useRequest(async () => {
     await fetch('/proxy/test')
+  }, {
+    manual: true,
   })
 
   return (
