@@ -38,6 +38,9 @@ importers:
       consola:
         specifier: ^3.2.3
         version: 3.2.3
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
       debug:
         specifier: ^4.3.5
         version: 4.3.5(supports-color@5.5.0)
