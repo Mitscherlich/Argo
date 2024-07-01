@@ -26,12 +26,14 @@ const LogDetails = styled.code`
   flex: 1;
   overflow: auto;
   height: 0;
+  min-width: 100%;
   width: max-content;
 `
 
 const LogsRow = styled.p`
   margin: 0;
   line-height: 2;
+  min-width: 100%;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
