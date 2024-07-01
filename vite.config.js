@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import autoImport from 'unplugin-auto-import/vite'
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react-swc'
 
 const r = (...path) => resolve(__dirname, ...path)
 
@@ -29,9 +29,15 @@ export default defineConfig({
   },
   plugins: [
     react({
-      babel: {
-        plugins: ['babel-plugin-macros', 'babel-plugin-styled-components'],
-      },
+      plugins: [
+        [
+          '@swc/plugin-styled-components',
+          {
+            displayName: true,
+            ssr: true,
+          },
+        ],
+      ],
     }),
     autoImport({
       imports: [

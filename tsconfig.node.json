@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs"
+  },
+  "include": [
+    "./server/**/*.ts"
+  ],
+  "ts-node": {
+    "swc": true
+  }
+}
