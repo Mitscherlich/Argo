@@ -10,10 +10,10 @@ const r = (...args) => path.resolve(__dirname, ...args)
 const app = express()
 
 const isProd = process.env.NODE_ENV === 'production'
-const host = process.env.HOST || '0.0.0.0'
-const port = parseInt(process.env.PORT || '3000')
 
 async function start() {
+  const config = await require('./config')
+
   if (isProd) {
     app.use(morgan('common'))
     app.use(express.static(r('./public')))
@@ -27,6 +27,7 @@ async function start() {
 
   require('./router')(app)
 
+  const { host, port } = config.app
   app.listen(port, host, () => {
     consola.success({
       message: `server running at http://${host}:${port}`,

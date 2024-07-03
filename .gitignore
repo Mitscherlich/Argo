@@ -4,3 +4,5 @@ dist/
 data/
 logs/
 .swc/
+config/*
+!config/config.example.json
