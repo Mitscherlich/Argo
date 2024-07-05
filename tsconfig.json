@@ -9,6 +9,7 @@
     ]
   },
   "include": [
+    "./auto-imports.d.ts",
     "./client/**/*.ts",
     "./client/**/*.tsx"
   ]

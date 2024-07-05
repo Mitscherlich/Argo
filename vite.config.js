@@ -8,7 +8,6 @@ const r = (...path) => resolve(__dirname, ...path)
 const prefix = 'monaco-editor/esm/vs'
 
 export default defineConfig({
-  root: r('./client'),
   resolve: {
     alias: {
       '~bootstrap': r('node_modules/bootstrap'),
