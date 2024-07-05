@@ -10,7 +10,7 @@ const r = (...path: string[]) => resolve(__dirname, ...path)
 
 const isProd = process.env.NODE_ENV === 'production'
 
-;(async () => {
+async function createServer() {
   const config = await loadConfig()
   const app = express()
 
@@ -29,10 +29,26 @@ const isProd = process.env.NODE_ENV === 'production'
 
   const { host, port } = config.app
 
-  app.listen(port, host, () => {
+  const server = app.listen(port, host, () => {
     consola.success({
       message: `server running at http://${host}:${port}`,
       badge: true,
     })
   })
-})()
+
+  return server
+}
+
+const serverPromise = createServer()
+
+process.on('SIGTERM', () => {
+  consola.warn('SIGTERM signal received: closing server')
+  serverPromise.then((server) => {
+    server.close(() => {
+      consola.success({
+        message: 'server closed!',
+        badge: true,
+      })
+    })
+  })
+})
