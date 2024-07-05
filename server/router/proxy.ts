@@ -1,9 +1,10 @@
-const { format } = require('util')
-const { createProxyMiddleware, loggerPlugin } = require('http-proxy-middleware')
-const { Router } = require('express')
+import { format } from 'node:util'
+import { createProxyMiddleware, loggerPlugin } from 'http-proxy-middleware'
+import type { NextFunction, Request, Response } from 'express'
+import { Router } from 'express'
 
-const { storage } = require('./config')
-const { logWritable } = require('./log')
+import { storage } from './config'
+import { logWritable } from './log'
 
 const fsLogger = {
   info: (input, ...data) => {
@@ -17,12 +18,7 @@ const fsLogger = {
   },
 }
 
-/**
- * @param {import('http').IncomingMessage} req
- * @param {import('http').OutgoingMessage} res
- * @param {Function} next
- */
-async function proxyRequest(req, res, next) {
+export async function proxyRequest(req: Request, res: Response, next: NextFunction) {
   const config = await storage.getItem('config.json') ?? {}
   const router = Router()
   Object.keys(config).forEach((path) => {
@@ -41,11 +37,7 @@ async function proxyRequest(req, res, next) {
     }))
   }, [])
 
-  req.url = req.headers['x-request-path'] ?? req.url.replace(/^\/proxy/, '')
+  req.url = req.headers['x-request-path'] as string ?? req.url.replace(/^\/proxy/, '')
 
   router(req, res, next)
-}
-
-module.exports = {
-  proxyRequest,
 }

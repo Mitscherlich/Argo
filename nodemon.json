@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json.schemastore.org/nodemon.json",
+  "execMap": {
+    "ts": "ts-node -P tsconfig.node.json"
+  }
+}

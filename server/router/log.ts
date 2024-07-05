@@ -1,13 +1,14 @@
-const { resolve } = require('path')
-const { createWriteStream } = require('fs')
-const { createLogTail } = require('../utils/tail')
+import { resolve } from 'node:path'
+import { createWriteStream } from 'node:fs'
+import type { Request, Response } from 'express'
+import { createLogTail } from '../utils/tail'
 
-const r = (...path) => resolve(__dirname, ...path)
+const r = (...path: string[]) => resolve(__dirname, ...path)
 
-const logPath = r('../../logs/proxy.log')
-const logWritable = createWriteStream(logPath, { flags: 'a+' })
+export const logPath = r('../../logs/proxy.log')
+export const logWritable = createWriteStream(logPath, { flags: 'a+' })
 
-function stream(req, res) {
+export function stream(req: Request, res: Response) {
   res.setHeader('Cache-Control', 'no-cache')
   res.setHeader('Content-Type', 'text/event-stream')
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -27,10 +28,4 @@ function stream(req, res) {
   req.on('close', () => {
     tail.close()
   })
-}
-
-module.exports = {
-  logPath,
-  logWritable,
-  stream,
 }

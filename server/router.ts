@@ -1,9 +1,9 @@
-const config = require('./router/config')
-const log = require('./router/log')
-const proxy = require('./router/proxy')
+import type { Application } from 'express'
+import * as config from './router/config'
+import * as log from './router/log'
+import * as proxy from './router/proxy'
 
-/** @param {import('express').Application} app */
-module.exports = (app) => {
+export function register(app: Application) {
   /** config routes */
   app.post('/config/save', config.save)
   app.get('/config/get', config.get)

@@ -1,12 +1,13 @@
-const { EventEmitter } = require('events')
-const { createReadStream, stat, watch } = require('fs')
+import { EventEmitter } from 'node:events'
+import type { FSWatcher, ReadStream } from 'node:fs'
+import { createReadStream, stat, watch } from 'node:fs'
 
 class Tail extends EventEmitter {
-  #path
-  #options
-  #stream
+  #path: string
+  #options: any
+  #stream?: ReadStream
   #fileSize = 0
-  #fsWacher = null
+  #fsWacher: FSWatcher | null = null
 
   static #fsWatcherMap = new Map()
 
@@ -25,13 +26,13 @@ class Tail extends EventEmitter {
       start,
     })
 
-    this.#stream.on('data', (chunk) => {
+    this.#stream!.on('data', (chunk) => {
       this.emit('data', chunk)
     })
-    this.#stream.on('end', () => {
+    this.#stream!.on('end', () => {
       this.emit('end')
     })
-    this.#stream.on('error', (err) => {
+    this.#stream!.on('error', (err) => {
       this.emit('error', err)
     })
   }
@@ -71,10 +72,6 @@ class Tail extends EventEmitter {
   }
 }
 
-function createLogTail(path, options) {
+export function createLogTail(path, options = {}) {
   return new Tail(path, options).start()
-}
-
-module.exports = {
-  createLogTail,
 }

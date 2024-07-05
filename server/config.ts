@@ -1,7 +1,7 @@
-const { resolve } = require('path')
-const { loadConfig } = require('unconfig')
+import { resolve } from 'node:path'
+import { loadConfig } from 'unconfig'
 
-const r = (...path) => resolve(__dirname, ...path)
+const r = (...path: string[]) => resolve(__dirname, ...path)
 
 const envMap = {
   development: 'dev',
@@ -14,7 +14,7 @@ const env = envMap[nodeEnv] || envMap.development
 const host = process.env.HOST || '0.0.0.0'
 const port = parseInt(process.env.PORT || '3000')
 
-module.exports = (async () => {
+export default async () => {
   const { config } = await loadConfig({
     cwd: r('../config'),
     sources: [
@@ -28,4 +28,4 @@ module.exports = (async () => {
   })
 
   return config
-})()
+}
