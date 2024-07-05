@@ -5,6 +5,7 @@ import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import consola from 'consola'
 import loadConfig from './config'
+import { upon } from './utils/process'
 
 const r = (...path: string[]) => resolve(__dirname, ...path)
 
@@ -30,8 +31,15 @@ async function createServer() {
   const { host, port } = config.app
 
   const server = app.listen(port, host, () => {
-    consola.success({
+    consola.ready({
       message: `server running at http://${host}:${port}`,
+      badge: true,
+    })
+  })
+
+  server.on('close', () => {
+    consola.warn({
+      message: 'server closed!',
       badge: true,
     })
   })
@@ -41,14 +49,10 @@ async function createServer() {
 
 const serverPromise = createServer()
 
-process.on('SIGTERM', () => {
-  consola.warn('SIGTERM signal received: closing server')
-  serverPromise.then((server) => {
-    server.close(() => {
-      consola.success({
-        message: 'server closed!',
-        badge: true,
-      })
-    })
+upon('SIGTERM SIGINT')
+  .then((signal) => {
+    consola.warn(`${signal} signal received: closing server`)
+    return serverPromise
+  }).then((server) => {
+    server.close()
   })
-})
