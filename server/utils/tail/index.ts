@@ -1,6 +1,7 @@
 import { EventEmitter } from 'node:events'
 import type { FSWatcher, ReadStream } from 'node:fs'
 import { createReadStream, stat, watch } from 'node:fs'
+import { ensureFileSync } from 'fs-extra'
 
 class Tail extends EventEmitter {
   #path: string
@@ -61,6 +62,7 @@ class Tail extends EventEmitter {
   }
 
   start() {
+    ensureFileSync(this.#path)
     this.#initFsWatcher()
     this.#retrieve()
     return this
