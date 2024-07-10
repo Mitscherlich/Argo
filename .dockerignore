@@ -1,0 +1,7 @@
+node_modules/
+.git/
+.swc/
+data/
+logs/
+output/
+dist/

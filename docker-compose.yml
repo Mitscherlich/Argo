@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  app:
+    container_name: http-proxy-webui
+    build:
+      context: .
+    network_mode: host
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+    volumes:
+      - data:/app/data
+      - data:/app/logs
+      - data:/app/config
+
+volumes:
+  data:
